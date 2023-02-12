@@ -78,5 +78,53 @@ module.exports = {
         console.log(err);
         res.status(500).json(err);
       });
+  },
+
+  createReaction(req, res) {
+    Reaction.create({ _id: req.params.thoughtId })
+      .then((Reaction) =>
+        !Reaction
+          ? res.status(404).json({ message: 'Thought invaild' })
+          : User.findOneAndUpdate(
+              { Reaction: req.params.reactionId },
+              { $pull: { students: req.params.ReactionId } },
+              { new: true }
+            )
+      )
+      .then((user) =>
+        !user
+          ? res.status(404).json({
+              message: 'User not found',
+            })
+          : res.json({ message: 'Added thought successfully' })
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
+  
+  deleteReaction(req, res) {
+    Reaction.findOneAndRemove({ _id: req.params.thoughtId })
+      .then((Reaction) =>
+        !Reaction
+          ? res.status(404).json({ message: 'Thought not found' })
+          : Reaction.findOneAndUpdate(
+              { Reaction: req.params.thoughtId },
+              { $pull: { Reaction: req.params.thoughtId } },
+              { new: true }
+            )
+      )
+      .then((Reaction) =>
+        !Reaction
+          ? res.status(404).json({
+              message: 'Reaction deleted, but not found',
+            })
+          : res.json({ message: 'Deleted successfully' })
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   }
 }
