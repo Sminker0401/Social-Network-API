@@ -81,13 +81,13 @@ module.exports = {
   },
 
   createReaction(req, res) {
-    Reaction.create({ _id: req.params.thoughtId })
-      .then((Reaction) =>
-        !Reaction
+    reaction.create({ _id: req.params.reactionId })
+      .then((reaction) =>
+        !reaction
           ? res.status(404).json({ message: 'Thought invaild' })
           : User.findOneAndUpdate(
-              { Reaction: req.params.reactionId },
-              { $pull: { students: req.params.ReactionId } },
+              { reaction: req.params.reactionId },
+              { $pull: { students: req.params.reactionId } },
               { new: true }
             )
       )
@@ -105,18 +105,18 @@ module.exports = {
   },
   
   deleteReaction(req, res) {
-    Reaction.findOneAndRemove({ _id: req.params.thoughtId })
-      .then((Reaction) =>
-        !Reaction
-          ? res.status(404).json({ message: 'Thought not found' })
-          : Reaction.findOneAndUpdate(
-              { Reaction: req.params.thoughtId },
-              { $pull: { Reaction: req.params.thoughtId } },
+    reaction.findOneAndRemove({ _id: req.params.reactionId })
+      .then((reaction) =>
+        !reaction
+          ? res.status(404).json({ message: 'Reaction not found' })
+          : reaction.findOneAndUpdate(
+              { reaction: req.params.reactionId },
+              { $pull: { reaction: req.params.reactionId } },
               { new: true }
             )
       )
-      .then((Reaction) =>
-        !Reaction
+      .then((reaction) =>
+        !reaction
           ? res.status(404).json({
               message: 'Reaction deleted, but not found',
             })
