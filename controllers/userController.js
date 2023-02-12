@@ -1,4 +1,4 @@
-const { ObjectId } = require('mongoose').Types;
+const { ObjectId } = require('mongoose');
 const { User, Thought } = require('../models');
 
 module.exports = {
@@ -50,29 +50,29 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'User not valid' })
-          : res.json(course)
+          : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
   },
 
-  addFriend(req, res) {
-    console.log(req.body)
-    friend.create(req.body)
-      .then((friend) => res.json(friend))
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
-  },
+//   addFriend(req, res) {
+//     console.log(req.body)
+//     friend.create(req.body)
+//       .then((friend) => res.json(friend))
+//       .catch((err) => {
+//         console.log(err);
+//         return res.status(500).json(err);
+//       });
+//   },
 
-  deleteFriend(req, res) {
-    friend.findOneAndDelete({ _id: req.params.friendId })
-      .then((friend) =>
-        !friend
-          ? res.status(404).json({ message: 'ID not found' })
-          : friend.deleteMany({ _id: { $in: friend.friendId } })
-      )
-      .then(() => res.json({ message: 'Deleted successfully' }))
-      .catch((err) => res.status(500).json(err));
-  },
+//   deleteFriend(req, res) {
+//     friend.findOneAndDelete({ _id: req.params.friendId })
+//       .then((friend) =>
+//         !friend
+//           ? res.status(404).json({ message: 'ID not found' })
+//           : friend.deleteMany({ _id: { $in: friend.friendId } })
+//       )
+//       .then(() => res.json({ message: 'Deleted successfully' }))
+//       .catch((err) => res.status(500).json(err));
+//   },
 };

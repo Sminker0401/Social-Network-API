@@ -33,13 +33,13 @@ module.exports = {
   },
  
   addThoughts(req, res) {
-    Thought.create({ _id: req.params.thoughtId })
+    Thought.create(req.body)
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: 'Thought invaild' })
           : User.findOneAndUpdate(
-              { thought: req.params.thoughtId },
-              { $pull: { students: req.params.thoughtId } },
+              { _id: req.body.userId },
+              { $push: { thought: thought._id } },
               { new: true }
             )
       )
@@ -87,7 +87,7 @@ module.exports = {
           ? res.status(404).json({ message: 'Thought invaild' })
           : User.findOneAndUpdate(
               { reaction: req.params.reactionId },
-              { $pull: { students: req.params.reactionId } },
+              { $pull: { reaction: req.params.reactionId } },
               { new: true }
             )
       )
